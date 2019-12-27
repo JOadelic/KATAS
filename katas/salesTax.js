@@ -23,19 +23,31 @@ const companySalesData = [
 ];
 
 
-const calculateSalesTax = function(salesData, taxRates) {
+const calculateSalesTax = function(companySalesData, taxRates) {
   let companyTotals = {};
+  let companyData = companySalesData;
+
+  sumSales = (array) => {
+    return array.reduce((a, b) => a + b, 0);
+  }
+
+  taxPaid = (percentage, number) => {
+    return percentage * number;
+  }
+
   
-  for (company of salesData) {
-    companyTotals[company.name] = company.sales
   
+  for (let company of companyData) {
+    if (companyTotals.hasOwnProperty(company.name)) {
+      companyTotals[company.name].totalSales += sumSales(company.sales);
+    } else {
+      companyTotals[company.name] = {totalSales: sumSales(company.sales)};
+    }
     
   }
-console.log(companyTotals)
-}
 
-// companyTotals.name = company.name;
-// companyTotals.totalSales = company.sales.reduce((a, b) => a + b, 0);
+    return companyTotals;
+  }
 
 console.log(calculateSalesTax(companySalesData, salesTaxRates))
-// console.log(companySalesData.sales)
+// totalSales: companyData[i].sales.reduce((a, b) => a + b, 0)
