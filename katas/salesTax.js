@@ -24,29 +24,34 @@ const companySalesData = [
 
 
 const calculateSalesTax = function(companySalesData, taxRates) {
-  let companyTotals = {};
-  let companyData = companySalesData;
-
-  sumSales = (array) => {
-    return array.reduce((a, b) => a + b, 0);
-  }
-
-  taxPaid = (percentage, number) => {
-    return percentage * number;
-  }
-
+  let companyTotals = [];
+  let finalTotals = {};
   
-  
-  for (let company of companyData) {
-    if (companyTotals.hasOwnProperty(company.name)) {
-      companyTotals[company.name].totalSales += sumSales(company.sales);
-    } else {
-      companyTotals[company.name] = {totalSales: sumSales(company.sales)};
+  for (let companyData of companySalesData) {
+    companyData.sales = sumSales(companyData.sales);
+    companyData.taxPaid = 0
+    companyTotals.push(companyData);
+
+    for (let province in taxRates) {
+      if (province == companyData.province) {
+        companyData.taxPaid = companyData.sales * taxRates[province]
+      }
     }
-    
   }
 
-    return companyTotals;
+  for (let calculatedTotals of companyTotals) {
+    if (finalTotals.hasOwnProperty(calculatedTotals.name)) {
+      console.log('matching', calculatedTotals.name)
+      finalTotals[calculatedTotals.name].taxPaid = finalTotals[calculatedTotals.name].taxPaid + calculatedTotals.taxPaid
+      finalTotals[calculatedTotals.name].sales += calculatedTotals.sales
+    } 
+    finalTotals[calculatedTotals.name] = { sales: calculatedTotals.sales, taxPaid: calculatedTotals.taxPaid }
+  }
+  
+  console.log('finalTotals',finalTotals)
+
+
+    // return companyTotals;
   }
 
 console.log(calculateSalesTax(companySalesData, salesTaxRates))
