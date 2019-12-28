@@ -1,3 +1,6 @@
+// Given the following data, implement a function 
+// calculateSalesTax that calculates the total sales and total tax, grouped by company.
+
 const salesTaxRates = {
   AB: 0.05,
   BC: 0.12,
@@ -27,32 +30,37 @@ const calculateSalesTax = function(companySalesData, taxRates) {
   let companyTotals = [];
   let finalTotals = {};
   
+  sumSales = (array) => {
+    return array.reduce((a, b) => a + b, 0);
+  }
+  
+  taxPaid = (rate, number) => {
+    return rate * number;
+  }
+  
   for (let companyData of companySalesData) {
     companyData.sales = sumSales(companyData.sales);
-    companyData.taxPaid = 0
+    companyData.taxPaid = 0;
     companyTotals.push(companyData);
 
     for (let province in taxRates) {
       if (province == companyData.province) {
-        companyData.taxPaid = companyData.sales * taxRates[province]
+        companyData.taxPaid = companyData.sales * taxRates[province];
+        companyData.taxPaid = taxPaid(taxRates[province], companyData.sales);
       }
     }
   }
 
   for (let calculatedTotals of companyTotals) {
     if (finalTotals.hasOwnProperty(calculatedTotals.name)) {
-      console.log('matching', calculatedTotals.name)
-      finalTotals[calculatedTotals.name].taxPaid = finalTotals[calculatedTotals.name].taxPaid + calculatedTotals.taxPaid
-      finalTotals[calculatedTotals.name].sales += calculatedTotals.sales
-    } 
-    finalTotals[calculatedTotals.name] = { sales: calculatedTotals.sales, taxPaid: calculatedTotals.taxPaid }
+      finalTotals[calculatedTotals.name].totalTaxPaid += calculatedTotals.taxPaid;
+      finalTotals[calculatedTotals.name].totalSales += calculatedTotals.sales;
+    } else {
+      finalTotals[calculatedTotals.name] = { totalSales: calculatedTotals.sales, totalTaxPaid: calculatedTotals.taxPaid };
+      }
   }
-  
-  console.log('finalTotals',finalTotals)
 
-
-    // return companyTotals;
-  }
+  return finalTotals;
+}
 
 console.log(calculateSalesTax(companySalesData, salesTaxRates))
-// totalSales: companyData[i].sales.reduce((a, b) => a + b, 0)
