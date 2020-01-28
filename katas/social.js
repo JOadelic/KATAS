@@ -31,4 +31,20 @@ const data = {
   }
 };
 
-let name = "jordan";
+// Implement a function biggestFollower()
+// which returns the name of the individual who follows the most people.
+
+const biggestFollower = object => {
+  let data = Object.values(object);
+  let result = { name: "", follows: [] };
+
+  data.forEach(element => {
+    if (element.follows.length >= result.follows.length) {
+      result.follows = element.follows;
+      result.name = element.name;
+    }
+  });
+  return result.name;
+};
+
+// Implement mostPopular() which returns the name of the most popular (most followed) individual.
