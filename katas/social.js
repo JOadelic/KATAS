@@ -48,3 +48,37 @@ const biggestFollower = object => {
 };
 
 // Implement mostPopular() which returns the name of the most popular (most followed) individual.
+// This only returns one person. Doesnt for multiple people with equal most follows
+
+const mostPopular = object => {
+  let dataEntries = Object.entries(object);
+  let accountsFollowed = [];
+
+  dataEntries.forEach(element => {
+    element.totalFollowers = 0;
+    for (let i = 0; i < element[1].follows.length; i++) {
+      accountsFollowed.push(element[1].follows[i]);
+    }
+  });
+
+  for (profile of dataEntries) {
+    for (follower of accountsFollowed) {
+      if (follower === profile[0]) {
+        profile.totalFollowers += 1;
+      }
+    }
+  }
+
+  dataEntries.reverse();
+
+  return dataEntries[0][1].name;
+};
+
+console.log(mostPopular(data));
+// followedAccounts = [].concat.apply([], followed);
+// f01 = 2
+// f02 = 2
+// f03 = 2
+// f04 = 3
+// f05 = 3
+// f06 = 3
