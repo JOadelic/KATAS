@@ -74,11 +74,30 @@ const mostPopular = object => {
   return dataEntries[0][1].name;
 };
 
-console.log(mostPopular(data));
-// followedAccounts = [].concat.apply([], followed);
-// f01 = 2
-// f02 = 2
-// f03 = 2
-// f04 = 3
-// f05 = 3
-// f06 = 3
+// Implement printAll() which outputs a list of everyone and for each of them,
+// the names of who they follow and who follows them.
+
+const printAll = object => {
+  let data = Object.entries(object);
+  let result = {};
+
+  // loop through each profile in data w/ forEach: create a new key/value pair for followingNames & followerNames = []
+  // for each profile, loop through all other profiles & if(includes) current profile, add that profile.name to list
+
+  data.forEach(element => {
+    element[1].followingNames = [];
+    element[1].followerNames = [];
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[i][1].follows.includes(element[0])) {
+        element[1].followerNames.push(data[i][1].name);
+      }
+    }
+    result[element[1].name] = {};
+    result[element[1].name].followerNames = element[1].followerNames;
+  });
+
+  return result;
+};
+
+console.log(printAll(data));
