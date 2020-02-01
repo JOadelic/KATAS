@@ -82,7 +82,9 @@ const printAll = object => {
   let result = {};
 
   // loop through each profile in data w/ forEach: create a new key/value pair for followingNames & followerNames = []
-  // for each profile, loop through all other profiles & if(includes) current profile, add that profile.name to list
+  // for each profile, loop through all other profiles & if(includes current profile), add that profile.name to list
+
+  // then check values in current profile follows array, if value matches id of other profiles push the name to followingNames
 
   data.forEach(element => {
     element[1].followingNames = [];
@@ -92,9 +94,13 @@ const printAll = object => {
       if (data[i][1].follows.includes(element[0])) {
         element[1].followerNames.push(data[i][1].name);
       }
+      if (element[1].follows.includes(data[i][0])) {
+        element[1].followingNames.push(data[i][1].name);
+      }
     }
     result[element[1].name] = {};
     result[element[1].name].followerNames = element[1].followerNames;
+    result[element[1].name].followingNames = element[1].followingNames;
   });
 
   return result;
